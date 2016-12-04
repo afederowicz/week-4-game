@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>simple crystal game</title>
+  
+  <style type="text/css">
+    .crystalImage {
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+
+</head>
+<body>
+
+  <div id="crystals">
+  
+  <h1>Number to Guess: <span id="numberToGuess"></span></h1>
+
+  <h2>Your score: <span id="score"></span></h2>
+
+  <h2><span id="result"></span></h2>
+
+  <h2>Win counter: <span id="wins"></span></h2>
+
+  <h2>Loss Counter: <span id="losses"></span></h2>
+
+ 
+  </div>
+
+  <!-- JAVASCRIPT  -->
+  <!-- ========================================= -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+  <script type="text/javascript">
+  var targetNumber = (Math.floor(Math.random()*101 + 19));
+  $("#numberToGuess").text(targetNumber);
+  var counter = 0;
+  
+  var numberOptions = [Math.ceil(Math.random()*12), Math.ceil(Math.random()*12), Math.ceil(Math.random()*12), Math.ceil(Math.random()*12)];
+  // Next we create a for loop to create crystals for every numberOption.
+  for (var i = 0; i < numberOptions.length; i++) {
+    // For each iteration, we will create an imageCrystal
+    var imageCrystal = $("<img>");
+    // First each crystal will be given the class ".crystalImage".
+    // This will allow the CSS to take effect.
+    imageCrystal.addClass("crystalImage");
+    // Each imageCrystal will be given a src link to the crystal image
+    imageCrystal.attr("src", "http://cdn.playbuzz.com/cdn/35910209-2844-45c0-b099-f4d82878d54f/00261fda-4062-4096-81fd-8cf96b9034e8.jpg");
+    // Each imageCrystal will be given a data attribute called data-crystalValue.
+    // This data attribute will be set equal to the array value.
+    imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+    // Lastly, each crystal image (with all it classes and attributes) will get added to the page.
+    $("#crystals").append(imageCrystal);
+  }
+  // This time, our click event applies to every single crystal on the page. Not just one.
+  $(".crystalImage").on("click", function() {
+    // Determining the crystal's value requires us to extract the value from the data attribute.
+    // Using the $(this) keyword specifies that we should be extracting the crystal value of the clicked crystal.
+    // Using the .data("crystalvalue") allows us to grab the value out of the "data-crystalvalue" attribute.
+    // (It automatically strips the "data-" part).
+    var crystalValue = ($(this).data("crystalvalue"));
+    // We then add the crystalValue to the user's "counter" which is a global variable.
+    // Every click, from every crystal adds to the global counter.
+    counter += crystalValue;
+
+    var wins = 0;
+
+    var losses = 0;
+    // All of the same game win-lose logic applies. So the rest remains unchanged.
+    $("#score").html(counter);
+    if (counter === targetNumber) {
+      $("#wins").html(wins + 1);
+      $("#result").html("You Won!");
+
+    }
+    else if (counter >= targetNumber) {
+      $("#losses").html(losses + 1);
+      $("#result").html("You Lost!");
+    }
+  });
+  </script>
+</body>
+</html>
